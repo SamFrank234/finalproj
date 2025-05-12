@@ -43,6 +43,19 @@ void hash_prime(mpz_t& input, mpz_t& rop, long bitcnt){
     hash_modN(input, hashed, N);
     mpz_nextprime(rop, hashed);
 }
+
+void cantor_modN(mpz_t& rop, mpz_t& a, mpz_t& b, mpz_t& N){
+    mpz_t ab;
+    mpz_init(ab);
+    mpz_add(ab, a, b);
+    mpz_t ab1;
+    mpz_init(ab1);
+    mpz_add_ui(ab1, ab, 1);
+    mpz_mul(ab, ab1, ab);
+    mpz_tdiv_q_ui(ab, ab, 2); 
+    mpz_add(rop, ab, b);
+}
+
 void triple_cantor_modN(mpz_t& rop, mpz_t& a, mpz_t& b, long c, mpz_t& N){
     // a, b --> (a+b)(a+b+1)/2 + b
     mpz_t ab;

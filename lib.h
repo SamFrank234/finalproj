@@ -7,6 +7,7 @@ void gen_prime(mpz_t& rop, const mp_bitcnt_t& n);
 void gen_input(mpz_t& dest, mpz_t& N);
 void hash_modN(mpz_t& input, mpz_t& output, mpz_t& N);
 void hash_prime(mpz_t& input, mpz_t& rop, long n);
+void cantor_modN(mpz_t& rop, mpz_t& a, mpz_t& b, mpz_t& N);
 void triple_cantor_modN(mpz_t& rop, mpz_t& a, mpz_t& b, long c, mpz_t& N);
 
 #endif

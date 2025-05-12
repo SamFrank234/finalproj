@@ -1,0 +1,21 @@
+*VDFs based on Class Groups*
+
+
+**What are Class Groups?**
+- focus on class groups of positive definite binary quadratic forms
+    - what is that?
+    - intuitively: a quadratic curve (parabola) that stays above the x axis is positive definite
+    - can represent this quadratic via f(x,y) = ax^2 + bxy + cy^2
+    - determinant = b^2 - 4ac (like in quadratic formula)
+        - if determinant < 0 => no real solutions => positive definite
+
+
+how does this help VDFs?
+- instead of integer in RSA modulo group, use a positive definite form f(a,b,c) in class group
+- order is unknown and hard to calculate
+    - no trusted setup required
+
+Squaring algo:
+- solve bk = c mod a for k using extended euclidean algo (k has form z + vn)
+- then A = a^2, B = b - 2az, C = z^2 - (bz-c)/a
+- return f(A,B,C)
