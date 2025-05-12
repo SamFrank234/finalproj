@@ -1,21 +1,14 @@
 #include "rsa.h"
-#include "lib.h"
 
 RSA_VDF::RSA_VDF(){}
 
 void RSA_VDF::computeY(mpz_t &x){
-    
-    //H(x): {0,1}^* -> [0, N-1]
-    mpz_t hx;
-    mpz_init(hx);
-    hash_modN(x, hx, N);
-
     //repeated squares
     mpz_t exp;
     mpz_init(exp);
     mpz_ui_pow_ui(exp, 2, T);
     mpz_init(y);
-    mpz_powm(y, hx, exp, N);
+    mpz_powm(y, x, exp, N);
 }
 
 /*
@@ -42,47 +35,3 @@ void RSA_VDF::setup(int _lambda, long _T){
     mpz_init(N);
     mpz_mul(N, p, q);
 }
-
-
-/*
- * evaluate the VDF:
- * 1) calculate repeated squares of hashed input
- * i.e. H(x)^2^T where H: {0,1}^* -> [0, N-1]
- * 2) generate Wesolowski proof
- */
-Proof RSA_VDF::eval(mpz_t &x){
-   
-    computeY(x); 
-
-    mpz_t xyT;
-    mpz_init(xyT);
-    triple_cantor_modN(xyT, x, y, T, N);
-
-    // l = H(x+y+T) in Primes(lambda)
-    mpz_t l;
-    mpz_init(l);
-    hash_prime(xyT, l, lambda);
-
-    mpz_t exp;
-    mpz_init(exp);
-    mpz_ui_pow_ui(exp, 2, T);
-
-    mpz_t q;
-    mpz_init(q);
-    mpz_tdiv_q(q, exp, l);
-    
-    WesProof pi;
-    mpz_init(pi.xq);
-    mpz_powm(pi.xq, x, q, N);
-    mpz_add_ui(pi.l, l, 0);
-    gmp_printf("VDF Wesolowski proof:\n\tx^q=%Zd\n\tl=%Zd\n", pi.xq, pi.l);
-    return pi;
-}
-
-bool RSA_VDF::verify(mpz_t& x, mpz_t& y, mpz_t& pi){
-    
-    return false;
-}
-
-
-
