@@ -2,18 +2,21 @@
 #include <gmp.h>
 #include <openssl/sha.h>
 #include <cstdlib>
+#include <random>
 
 void gen_prime(mpz_t& rop, const mp_bitcnt_t& n){
     gmp_randstate_t state;
     gmp_randinit_default(state);
-    gmp_randseed_ui(state, random());
+    std::random_device rd;
+    gmp_randseed_ui(state, rd());
     mpz_urandomb(rop, state, n);
     mpz_nextprime(rop, rop);
 }
 void gen_input(mpz_t& dest, mpz_t& N){
     gmp_randstate_t state;
     gmp_randinit_default(state);
-    gmp_randseed_ui(state, random());
+    std::random_device rd;
+    gmp_randseed_ui(state, rd());
     mpz_urandomm(dest, state, N);
 }
 void hash_modN(mpz_t& input, mpz_t& output, mpz_t& N){
