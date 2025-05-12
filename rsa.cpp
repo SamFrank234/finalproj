@@ -1,7 +1,9 @@
-#include <openssl/sha.h>
 #include "rsa.h"
+#include "lib.h"
 
-void RSA::computeY(mpz_t& x){
+RSA_VDF::RSA_VDF(){}
+
+void RSA_VDF::computeY(mpz_t &x){
     
     //H(x): {0,1}^* -> [0, N-1]
     mpz_t hx;
@@ -17,13 +19,13 @@ void RSA::computeY(mpz_t& x){
 }
 
 /*
- * Create RSA group G of order N,
+ * Create RSA_VDF group G of order N,
  * where N=pq and p, q are large primes
  * (specifically, p and q are both randomly 
  * generated primes in [0, 2^(lambda) - 1] 
  * where lambda is the security paramter of the VDF)
  */
-void RSA::setup(int _lambda, long _T){
+void RSA_VDF::setup(int _lambda, long _T){
     //save security params
     lambda = _lambda;
     T = _T;
@@ -48,7 +50,7 @@ void RSA::setup(int _lambda, long _T){
  * i.e. H(x)^2^T where H: {0,1}^* -> [0, N-1]
  * 2) generate Wesolowski proof
  */
-vdf_result RSA::eval(mpz_t x){
+Proof RSA_VDF::eval(mpz_t &x){
    
     computeY(x); 
 
@@ -67,14 +69,20 @@ vdf_result RSA::eval(mpz_t x){
 
     mpz_t q;
     mpz_init(q);
-    mpz_tdiv_q(q, exp, l)
-   
+    mpz_tdiv_q(q, exp, l);
     
-    
+    WesProof pi;
+    mpz_init(pi.xq);
+    mpz_powm(pi.xq, x, q, N);
+    mpz_add_ui(pi.l, l, 0);
+    gmp_printf("VDF Wesolowski proof:\n\tx^q=%Zd\n\tl=%Zd\n", pi.xq, pi.l);
+    return pi;
 }
 
-bool RSA::verify(mpz_t x, mpz_t y, mpz_t pi){
+bool RSA_VDF::verify(mpz_t& x, mpz_t& y, mpz_t& pi){
     
-
+    return false;
 }
+
+
 

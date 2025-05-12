@@ -2,21 +2,18 @@
 #define PROOF_H
 #include <gmp.h>
 
-class Proof{
-    public:
-            Proof(){}
-
-};
-
-class WesProof : public Proof {
+typedef struct Proof {
     mpz_t xq;
     mpz_t l;
+} Proof_t;
 
-public:
-    WesProof(mpz_t& _xq, mpz_t& _l)
-    : xq(_xq), l(+l)
-    {
+typedef struct WesProof : Proof {
+    mpz_t xq;
+    mpz_t l;
+    
+    WesProof (){
+
     }
-}
+} WesProof;
 
 #endif
