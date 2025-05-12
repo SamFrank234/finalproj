@@ -1,0 +1,44 @@
+VDF:
+lambda
+T
+computeY
+    setup
+    eval
+    verify
+
+
+RSA : VDF:
+N
+computeY{}
+    setup {}
+    
+
+[Wes/Piet]RSA: RSA:
+    eval{}
+    verify{}
+
+CG : VDF:
+d
+    setup{}
+
+[Wes/Piet]CG: CG:
+    eval{}
+    verify{}
+
+
+EvalResult:
+    result y
+    Proof pi
+
+
+Proof:
+    -
+
+WesProof:
+    q
+    l
+
+
+
+
+
